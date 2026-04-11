@@ -9,18 +9,18 @@ plt.rcParams["figure.figsize"] = (10,5)
 
 
 # =========================================================
-# 🔷 BÀI 1: DOANH THU SIÊU THỊ
+# BÀI 1: DOANH THU SIÊU THỊ
 # =========================================================
 print("\n===== BÀI 1 =====")
 
-df1 = pd.read_csv(r"C:\Users\AD\Downloads\Lab5\Lab5\ITA105_Lab_5_Supermarket.csv")
+df1 = pd.read_csv("/content/ITA105_Lab_5_Supermarket.csv")
 
 df1["date"] = pd.to_datetime(df1["date"])
 df1 = df1.set_index("date")
 
 # missing
 print(df1.isnull().sum())
-df1 = df1.fillna(method="ffill")
+df1 = df1.ffill() # Changed from fillna(method="ffill")
 
 # feature
 df1["year"] = df1.index.year
@@ -47,11 +47,11 @@ plt.show()
 
 
 # =========================================================
-# 🔷 BÀI 2: WEBSITE TRAFFIC
+# BÀI 2: WEBSITE TRAFFIC
 # =========================================================
 print("\n===== BÀI 2 =====")
 
-df2 = pd.read_csv(r"C:\Users\AD\Downloads\Lab5\Lab5\ITA105_Lab_5_Web_traffic.csv")
+df2 = pd.read_csv("/content/ITA105_Lab_5_Web_traffic.csv")
 
 df2["datetime"] = pd.to_datetime(df2["datetime"])
 df2 = df2.set_index("datetime")
@@ -60,66 +60,64 @@ df2 = df2.set_index("datetime")
 df2 = df2.resample("H").mean()
 
 # missing
-df2["traffic"] = df2["traffic"].interpolate()
+df2["visits"] = df2["visits"].interpolate() # Changed 'traffic' to 'visits'
 
 # feature
 df2["hour"] = df2.index.hour
 df2["dayofweek"] = df2.index.dayofweek
 
 # traffic theo giờ
-df2.groupby("hour")["traffic"].mean().plot(title="Traffic theo giờ")
+df2.groupby("hour")["visits"].mean().plot(title="Traffic theo giờ") # Changed 'traffic' to 'visits'
 plt.show()
 
 # seasonality ngày
-df2["traffic"].resample("D").mean().plot(title="Seasonality ngày")
+df2["visits"].resample("D").mean().plot(title="Seasonality ngày") # Changed 'traffic' to 'visits'
 plt.show()
 
 # seasonality tuần
-df2["traffic"].resample("W").mean().plot(title="Seasonality tuần")
+df2["visits"].resample("W").mean().plot(title="Seasonality tuần") # Changed 'traffic' to 'visits'
 plt.show()
 
 
 # =========================================================
-# 🔷 BÀI 3: GIÁ CỔ PHIẾU
+# BÀI 3: GIÁ CỔ PHIẾU
 # =========================================================
 print("\n===== BÀI 3 =====")
 
-df3 = pd.read_csv(r"C:\Users\AD\Downloads\Lab5\Lab5\ITA105_Lab_5_Stock.csv")
+df3 = pd.read_csv("/content/ITA105_Lab_5_Stock.csv")
 
 df3["date"] = pd.to_datetime(df3["date"])
 df3 = df3.set_index("date")
 
 # missing
-df3 = df3.fillna(method="ffill")
+df3 = df3.ffill() # Changed from fillna(method="ffill")
 
 # plot giá
-df3["close"].plot(title="Giá đóng cửa")
+df3["close_price"].plot(title="Giá đóng cửa")
 plt.show()
 
 # rolling mean
-df3["MA7"] = df3["close"].rolling(7).mean()
-df3["MA30"] = df3["close"].rolling(30).mean()
+df3["MA7"] = df3["close_price"].rolling(7).mean()
+df3["MA30"] = df3["close_price"].rolling(30).mean()
 
-df3[["close","MA7","MA30"]].plot(title="Trend cổ phiếu")
+df3[["close_price","MA7","MA30"]].plot(title="Trend cổ phiếu")
 plt.show()
 
 # seasonality theo tháng
 df3["month"] = df3.index.month
-df3.groupby("month")["close"].mean().plot(title="Seasonality theo tháng")
+df3.groupby("month")["close_price"].mean().plot(title="Seasonality theo tháng")
 plt.show()
-
-
 # =========================================================
-# 🔷 BÀI 4: SẢN XUẤT CÔNG NGHIỆP
+# BÀI 4: SẢN XUẤT CÔNG NGHIỆP
 # =========================================================
 print("\n===== BÀI 4 =====")
 
-df4 = pd.read_csv(r"C:\Users\AD\Downloads\Lab5\Lab5\ITA105_Lab_5_Production.csv")
-df4["date"] = pd.to_datetime(df4["date"])
-df4 = df4.set_index("date")
+df4 = pd.read_csv("/content/ITA105_Lab_5_Production.csv")
+df4["week_start"] = pd.to_datetime(df4["week_start"]) # Changed 'date' to 'week_start'
+df4 = df4.set_index("week_start") # Changed 'date' to 'week_start'
 
 # missing
-df4 = df4.fillna(method="ffill")
+df4 = df4.ffill() # Changed from fillna(method="ffill")
 
 # feature
 df4["year"] = df4.index.year
